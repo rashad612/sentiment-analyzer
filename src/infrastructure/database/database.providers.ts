@@ -1,10 +1,11 @@
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserEntity } from '@infrastructure/entities/user.entity';
 
 export const PostgresProvider = TypeOrmModule.forRootAsync({
   imports: [ConfigModule],
   inject: [ConfigService],
-  name: 'PostgresConnectionProvider',
+  // name: 'PostgresConnectionProvider',
   useFactory: async (configService: ConfigService) => {
     return {
       type: 'postgres',
@@ -15,7 +16,7 @@ export const PostgresProvider = TypeOrmModule.forRootAsync({
       database: configService.get('db.name'),
       autoLoadEntities: true,
       synchronize: configService.get('db.synchronize'),
-      entities: [],
+      entities: [UserEntity],
       logging: true,
     } as TypeOrmModuleAsyncOptions;
   },
