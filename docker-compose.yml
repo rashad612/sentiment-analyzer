@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    env_file:
+      - '.env'
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    container_name: postgres
+    #volumes:
+      # - /tmp/pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: sentiment-analyzer
+    env_file:
+      - '.env'
+    environment:
+      - PORT=${PORT}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+    ports:
+      - '3000:3000'
+      - '9090:9090'
+    depends_on:
+      - db
+    volumes:
+      - ./src:/app/src
+    links:
+      - db
+      - 'db:postgres'
