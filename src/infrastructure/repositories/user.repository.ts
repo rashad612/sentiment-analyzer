@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { UserEntity } from "@infrastructure/entities/user.entity";
-import { User } from "@domain/entities/User";
-import { CreateUserDto } from "@application/dto/create-user.dto";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserEntity } from '@infrastructure/entities/user.entity';
+import { User } from '@domain/entities/user';
+import { CreateUserDto } from '@application/dto/create-user.dto';
+import { SentimentEntity } from '@infrastructure/entities/sentiment.entity';
 
 @Injectable()
 export class UserRepository {
@@ -16,7 +17,12 @@ export class UserRepository {
     return { username: newUser.username };
   }
 
+  async updateSentiment(user: UserEntity, sentiment: SentimentEntity): Promise<void> {
+    user.sentiments.push(sentiment);
+    await this.repo.save(user);
+  }
+
   async findOne(whereCond: Partial<UserEntity>): Promise<UserEntity> {
-    return await this.repo.findOne({ where: whereCond });
+    return await this.repo.findOne({ where: whereCond, relations: { sentiments: true } });
   }
 }

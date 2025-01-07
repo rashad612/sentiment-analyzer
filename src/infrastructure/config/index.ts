@@ -14,4 +14,7 @@ export default () => ({
     password: process.env.DATABASE_PASSWORD || '',
     synchronize: process.env.DATABASE_SYNC === 'true',
   },
+  vendor: {
+    gcpAuthFile: process.env.GCP_AUTH_FILE || '',
+  }
 });

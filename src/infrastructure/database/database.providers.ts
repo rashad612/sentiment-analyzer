@@ -1,6 +1,7 @@
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserEntity } from '@infrastructure/entities/user.entity';
+import { SentimentEntity } from '@infrastructure/entities/sentiment.entity';
 
 export const PostgresProvider = TypeOrmModule.forRootAsync({
   imports: [ConfigModule],
@@ -16,7 +17,7 @@ export const PostgresProvider = TypeOrmModule.forRootAsync({
       database: configService.get('db.name'),
       autoLoadEntities: true,
       synchronize: configService.get('db.synchronize'),
-      entities: [UserEntity],
+      entities: [UserEntity, SentimentEntity],
       logging: true,
     } as TypeOrmModuleAsyncOptions;
   },
