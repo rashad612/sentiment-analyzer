@@ -8,7 +8,4 @@ export class UserEntity {
   @Column()
   @Index({ unique: true })
   username: string;
-
-  @Column()
-  password: string;
 }
