@@ -38,6 +38,9 @@
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
+    "@suites/di.nestjs": "^3.0.1",
+    "@suites/doubles.jest": "^3.0.1",
+    "@suites/unit": "^3.0.1",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
@@ -72,6 +75,12 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@application(.*)$": "<rootDir>/application$1",
+      "@domain(.*)$": "<rootDir>/domain$1",
+      "@infrastructure(.*)$": "<rootDir>/infrastructure$1",
+      "@constants(.*)$": "<rootDir>/constants$1"
+    }
   }
 }

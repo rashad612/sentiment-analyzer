@@ -7,9 +7,9 @@ import { Sentiment } from "@domain/entities/sentiment";
 
 @Injectable()
 export class UserService {
-  private readonly logger = new Logger(UserService.name);
   constructor(
     private readonly repo: UserRepository,
+    private readonly logger: Logger,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -25,6 +25,7 @@ export class UserService {
   async findOneByUsername(username: string): Promise<UserEntity | undefined> {
     try {
       const user = await this.repo.findOne({ username });
+      this.logger.debug(`Found user ${username}`, { user });
       if (!user) {
         throw new NotFoundException(`User with username ${username} not found`);
       }

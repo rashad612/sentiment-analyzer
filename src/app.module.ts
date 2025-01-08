@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import config from './infrastructure/config';
 import { DatabaseModule } from '@infrastructure/database/database.module';
@@ -20,6 +20,6 @@ import { SentimentRepository } from '@infrastructure/repositories/sentiment.repo
     LanguageApiModule,
   ],
   controllers: [AppController, UserController, SentimentController],
-  providers: [UserRepository, SentimentRepository, UserService, SentimentService],
+  providers: [UserRepository, SentimentRepository, UserService, SentimentService, Logger],
 })
 export class AppModule {}

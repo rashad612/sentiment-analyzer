@@ -9,11 +9,12 @@ import { LanguageApiService } from '@infrastructure/language-api/language-api.se
 
 @Injectable()
 export class SentimentService {
-  private readonly logger = new Logger(SentimentService.name);
+  // private readonly logger = new Logger(SentimentService.name);
   constructor(
     private readonly userRepo: UserRepository,
     private readonly sentimentRepo: SentimentRepository,
     private readonly languageApiService: LanguageApiService,
+    private readonly logger: Logger,
   ) {}
 
   async analyze(input: AnalyzeSentimentDto): Promise<Sentiment> {
@@ -24,7 +25,7 @@ export class SentimentService {
         throw new Error('User not found');
       }
       const analyzedSentiment = await this.languageApiService.analyzeSentiment(input.text);
-      this.logger.debug(`Analyzed:`, { analyzedSentiment });
+      this.logger.log(`Analyzed sentiment for user: ${user.username}:`, { analyzedSentiment });
       
       const sentiment: CreateSentimentDto = {
         text: input.text,

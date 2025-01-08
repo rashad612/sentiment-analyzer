@@ -23,6 +23,7 @@ export class UserRepository {
   }
 
   async findOne(whereCond: Partial<UserEntity>): Promise<UserEntity> {
-    return await this.repo.findOne({ where: whereCond, relations: { sentiments: true } });
+    const user = await this.repo.findOne({ where: whereCond, relations: { sentiments: true } });
+    return user;
   }
 }
