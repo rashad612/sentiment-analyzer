@@ -7,7 +7,6 @@ import { Sentiment } from '@domain/entities/sentiment';
 import { UserEntity } from '@infrastructure/entities/user.entity';
 
 describe('UserService', () => {
-
   let userService: UserService;
   let userRepository: Mocked<UserRepository>;
   let logger: Mocked<Logger>;
@@ -24,7 +23,7 @@ describe('UserService', () => {
     const fixtures = {
       id: 2,
       username: 'user-2',
-    }
+    };
     userRepository.create.mockResolvedValue(fixtures);
     const user = await userService.createUser({ username: 'user-2' });
     expect(userRepository.create).toHaveBeenCalledWith({ username: 'user-2' });
@@ -32,10 +31,10 @@ describe('UserService', () => {
   });
 
   it('should find user by username', async () => {
-    const fixtures: UserEntity = { 
+    const fixtures: UserEntity = {
       id: 1,
       username: 'user-1',
-      sentiments: []
+      sentiments: [],
     };
     userRepository.findOne.mockResolvedValue(fixtures);
     const user = await userService.findOneByUsername('user-1');
@@ -44,7 +43,7 @@ describe('UserService', () => {
   });
 
   it(`should get user's sentiment logs`, async () => {
-    const fixtures: UserEntity = { 
+    const fixtures: UserEntity = {
       id: 1,
       username: 'user-1',
       sentiments: [
@@ -61,7 +60,7 @@ describe('UserService', () => {
           score: 0.8999999761581421,
           magnitude: 0.8999999761581421,
           user: new UserEntity(),
-        }
+        },
       ],
     };
     const sentiments: Sentiment[] = [
@@ -74,7 +73,7 @@ describe('UserService', () => {
         text: `I'm happy`,
         score: 0.8999999761581421,
         magnitude: 0.8999999761581421,
-      }
+      },
     ];
     userRepository.findOne.mockResolvedValue(fixtures);
     const result = await userService.getSentiments('user-1');

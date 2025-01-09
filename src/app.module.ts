@@ -20,6 +20,12 @@ import { SentimentRepository } from '@infrastructure/repositories/sentiment.repo
     LanguageApiModule,
   ],
   controllers: [AppController, UserController, SentimentController],
-  providers: [UserRepository, SentimentRepository, UserService, SentimentService, Logger],
+  providers: [
+    UserRepository,
+    SentimentRepository,
+    UserService,
+    SentimentService,
+    Logger,
+  ],
 })
 export class AppModule {}

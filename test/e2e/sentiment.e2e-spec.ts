@@ -11,7 +11,7 @@ describe('SentimentController (e2e)', () => {
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication()
+    app = moduleFixture.createNestApplication();
     app.useLogger(false);
     await app.init();
   });
@@ -25,10 +25,10 @@ describe('SentimentController (e2e)', () => {
       .post('/sentiment/analyze')
       .send({
         username: 'user-1',
-        text: "I'm happy"
+        text: "I'm happy",
       })
       .expect(201)
-      .then( response => {
+      .then((response) => {
         expect(response.body).toHaveProperty('text');
         expect(response.body).toHaveProperty('score');
         expect(response.body).toHaveProperty('magnitude');

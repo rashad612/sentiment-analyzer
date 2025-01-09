@@ -16,5 +16,5 @@ export default () => ({
   },
   vendor: {
     gcpAuthFile: process.env.GCP_AUTH_FILE || '',
-  }
+  },
 });

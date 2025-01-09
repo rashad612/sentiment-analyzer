@@ -1,9 +1,14 @@
-import { Injectable, Logger, NotFoundException, UnprocessableEntityException } from "@nestjs/common";
-import { UserRepository } from "@infrastructure/repositories/user.repository";
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import { UserRepository } from '@infrastructure/repositories/user.repository';
 import { User } from '@domain/entities/user';
-import { CreateUserDto } from "@application/dto/create-user.dto";
+import { CreateUserDto } from '@application/dto/create-user.dto';
 import { UserEntity } from '@infrastructure/entities/user.entity';
-import { Sentiment } from "@domain/entities/sentiment";
+import { Sentiment } from '@domain/entities/sentiment';
 
 @Injectable()
 export class UserService {
@@ -17,7 +22,9 @@ export class UserService {
       this.logger.log(`Creating user: ${createUserDto.username}`);
       return await this.repo.create(createUserDto);
     } catch (err) {
-      this.logger.error(`Error creating user ${createUserDto.username}: ${err}`);
+      this.logger.error(
+        `Error creating user ${createUserDto.username}: ${err}`,
+      );
       throw new UnprocessableEntityException(err);
     }
   }
@@ -39,8 +46,13 @@ export class UserService {
     try {
       this.logger.log(`Getting sentiments for user: ${username}`);
       const user = await this.findOneByUsername(username);
-      return user?.sentiments
-        .map(s => ({ text: s.text, score: s.score, magnitude: s.magnitude })) || [];  
+      return (
+        user?.sentiments.map((s) => ({
+          text: s.text,
+          score: s.score,
+          magnitude: s.magnitude,
+        })) || []
+      );
     } catch (err) {
       throw new NotFoundException(err);
     }

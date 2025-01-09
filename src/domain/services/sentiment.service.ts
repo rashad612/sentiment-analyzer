@@ -1,11 +1,14 @@
-import { Injectable, Logger, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { UserRepository } from '@infrastructure/repositories/user.repository';
 import { SentimentRepository } from '@infrastructure/repositories/sentiment.repository';
 import { Sentiment } from '@domain/entities/sentiment';
 import { AnalyzeSentimentDto } from '@application/dto/analyze-sentiment.dto';
 import { CreateSentimentDto } from '@application/dto/create-sentiment.dto';
 import { LanguageApiService } from '@infrastructure/language-api/language-api.service';
-
 
 @Injectable()
 export class SentimentService {
@@ -24,19 +27,25 @@ export class SentimentService {
       if (!user) {
         throw new Error('User not found');
       }
-      const analyzedSentiment = await this.languageApiService.analyzeSentiment(input.text);
-      this.logger.log(`Analyzed sentiment for user: ${user.username}:`, { analyzedSentiment });
-      
+      const analyzedSentiment = await this.languageApiService.analyzeSentiment(
+        input.text,
+      );
+      this.logger.log(`Analyzed sentiment for user: ${user.username}:`, {
+        analyzedSentiment,
+      });
+
       const sentiment: CreateSentimentDto = {
         text: input.text,
         score: analyzedSentiment.score,
         magnitude: analyzedSentiment.magnitude,
-      }
+      };
 
       this.logger.log('Saving sentiment to DB:', { sentiment });
       const savedSentiment = await this.sentimentRepo.create(sentiment);
 
-      this.logger.log(`Update user ${input.username} sentiment:`, { savedSentiment });
+      this.logger.log(`Update user ${input.username} sentiment:`, {
+        savedSentiment,
+      });
       await this.userRepo.updateSentiment(user, savedSentiment);
 
       return {

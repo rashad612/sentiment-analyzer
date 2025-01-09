@@ -7,9 +7,7 @@ import { ConfigService } from '@nestjs/config';
 export class LanguageApiService {
   private logger = new Logger(LanguageApiService.name);
   private client: LanguageServiceClient;
-  constructor(
-    private configService: ConfigService,
-  ) {
+  constructor(private configService: ConfigService) {
     // @TODO: implement auth file.
     const keyFilename = this.configService.get('vendor.gcpAuthFile');
 
@@ -22,13 +20,15 @@ export class LanguageApiService {
     this.client = new LanguageServiceClient({ auth });
   }
 
-  async analyzeSentiment(inputText: string): Promise<{ score: number, magnitude: number }> {
+  async analyzeSentiment(
+    inputText: string,
+  ): Promise<{ score: number; magnitude: number }> {
     const PLAIN_TEXT = 1;
     const document = {
       content: inputText,
       type: PLAIN_TEXT,
     };
-  
+
     // Detects the sentiment of the text
     const [result] = await this.client.analyzeSentiment({ document });
     const sentiment = result.documentSentiment;

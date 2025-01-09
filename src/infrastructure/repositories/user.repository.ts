@@ -17,13 +17,19 @@ export class UserRepository {
     return { username: newUser.username };
   }
 
-  async updateSentiment(user: UserEntity, sentiment: SentimentEntity): Promise<void> {
+  async updateSentiment(
+    user: UserEntity,
+    sentiment: SentimentEntity,
+  ): Promise<void> {
     user.sentiments.push(sentiment);
     await this.repo.save(user);
   }
 
   async findOne(whereCond: Partial<UserEntity>): Promise<UserEntity> {
-    const user = await this.repo.findOne({ where: whereCond, relations: { sentiments: true } });
+    const user = await this.repo.findOne({
+      where: whereCond,
+      relations: { sentiments: true },
+    });
     return user;
   }
 }

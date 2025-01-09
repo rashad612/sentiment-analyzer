@@ -16,7 +16,8 @@ describe('SentimentService', () => {
   let logger: Mocked<Logger>;
 
   beforeEach(async () => {
-    const { unit, unitRef } = await TestBed.solitary(SentimentService).compile();
+    const { unit, unitRef } =
+      await TestBed.solitary(SentimentService).compile();
     sentimentService = unit;
     userRepo = unitRef.get(UserRepository);
     sentimentRepo = unitRef.get(SentimentRepository);
@@ -39,7 +40,7 @@ describe('SentimentService', () => {
       user,
     };
 
-    const updatedUser = {...user, sentiments: [savedSentiment]};
+    const updatedUser = { ...user, sentiments: [savedSentiment] };
 
     const analyzedSentiment = {
       text: `I'm happy`,
@@ -64,14 +65,16 @@ describe('SentimentService', () => {
 
   it('should throw an exception when trying to analyze sentiment for non existing user', async () => {
     userRepo.findOne.mockResolvedValue(undefined);
-    await expect(sentimentService.analyze({
-      username: 'non-existing-user',
-      text: `I'm happy`,
-    })).rejects.toThrow(UnprocessableEntityException);
+    await expect(
+      sentimentService.analyze({
+        username: 'non-existing-user',
+        text: `I'm happy`,
+      }),
+    ).rejects.toThrow(UnprocessableEntityException);
   });
 
   // it('should find user by username', async () => {
-  //   const fixtures: UserEntity = { 
+  //   const fixtures: UserEntity = {
   //     id: 1,
   //     username: 'user-1',
   //     sentiments: []
@@ -83,7 +86,7 @@ describe('SentimentService', () => {
   // });
 
   // it(`should get user's sentiment logs`, async () => {
-  //   const fixtures: UserEntity = { 
+  //   const fixtures: UserEntity = {
   //     id: 1,
   //     username: 'user-1',
   //     sentiments: [

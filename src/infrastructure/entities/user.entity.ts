@@ -1,5 +1,11 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { SentimentEntity } from "./sentiment.entity";
+import {
+  Column,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
+import { SentimentEntity } from './sentiment.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {

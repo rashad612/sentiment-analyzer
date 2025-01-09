@@ -27,10 +27,10 @@ describe('UserController (e2e)', () => {
     return request(app.getHttpServer())
       .post('/user/register')
       .send({
-       username: testUserName,
+        username: testUserName,
       })
       .expect(201)
-      .then( response => {
+      .then((response) => {
         expect(response.body).toHaveProperty('username', testUserName);
       });
   });
@@ -40,7 +40,7 @@ describe('UserController (e2e)', () => {
     return request(app.getHttpServer())
       .get(`/user/${testUserName}/sentiments`)
       .expect(200)
-      .then( response => {
+      .then((response) => {
         expect(Array.isArray(response.body)).toBeTruthy();
       });
   });
