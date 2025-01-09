@@ -154,8 +154,8 @@ sentiment of the text: `I'm happy` for user: `test-user`:
 POST [base-url]/sentiment/analyze
 Body:
 {
-	"username": "test-user",
-	"text": "I'm happy"
+  "username": "test-user",
+  "text": "I'm happy"
 }
 ```
 
@@ -163,9 +163,9 @@ If user already exists, you should get an output similar to this one:
 
 ```json
 {
-	"text": "I'm happy",
-	"score": 0.8999999761581421,
-	"magnitude": 0.8999999761581421
+  "text": "I'm happy",
+  "score": 0.8999999761581421,
+  "magnitude": 0.8999999761581421
 }
 ```
 
@@ -183,16 +183,16 @@ Will give something like this, or an empty array if user has no history:
 
 ```json
 [
-	{
-		"text": "I'm happy",
-		"score": "0.8999999761581421",
-		"magnitude": "0.8999999761581421"
-	},
-	{
-		"text": "I'm sad",
-		"score": "-0.8999999761581421",
-		"magnitude": "0.8999999761581421"
-	}
+  {
+    "text": "I'm happy",
+    "score": "0.8999999761581421",
+    "magnitude": "0.8999999761581421"
+  },
+  {
+    "text": "I'm sad",
+    "score": "-0.8999999761581421",
+    "magnitude": "0.8999999761581421"
+  }
 ]
 ```
 
