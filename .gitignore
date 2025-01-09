@@ -41,7 +41,7 @@ lerna-debug.log*
 .env.test.local
 .env.production.local
 .env.local
-vendor/auth.json
+vendor/*.json
 
 # temp directory
 .temp
