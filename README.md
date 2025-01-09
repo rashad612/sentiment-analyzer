@@ -108,7 +108,7 @@ It's best to prepare a test database for e2e tests using
 make sure `.env` file and `-e` parameters match:
 
 ```bash
-# This will create a test DB connection and initialize DB from `init.sql`
+# This will create a test DB connection and initialize it from `init.sql`
 docker run -d \
 -e POSTGRES_USER=root \
 -e POSTGRES_PASSWORD=root \
