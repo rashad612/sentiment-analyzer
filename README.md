@@ -1,14 +1,84 @@
+# Sentiment Analyzer
+
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is an API application that analyzes the sentiment of a given text. It uses 
+Google Cloud Natural Language API internally and is built on the 
+[Nest](https://github.com/nestjs/nest) framework.
 
-## Project setup
+
+## Setup and running
+
+### Prerequisites
+
+  * node 22.12.0+
+  * PostgreSQL
+  * Docker (optional).
+  * Make sure you machine is authenticated to Google Cloud Platform, or you
+    have the Service Account key auth JSON file for your GCP project.
+    https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts/keys/create
+
+### Preparing `.env` File
+
+Copy the environment file template as `.env` file.
+
+```bash
+$ cp .env.example .env
+```
+
+Modify the environment variables in the `.env` file, for example:
+
+```bash
+PORT=9090
+DATABASE_HOST=0.0.0.0
+DATABASE_PORT=5432
+DATABASE_USERNAME=root
+DATABASE_PASSWORD=root
+DATABASE_NAME=analysis
+DATABASE_SYNC=true
+GCP_AUTH_FILE='./vendor/auth.json'
+```
+
+`DATABASE_*` variables are connection parameters from PostgreSQL server. If you
+are using Docker Compose, these parameters will be created in the database 
+container.
+
+If you are using Docker Compose, the variable `PORT` will work only with the 
+following values: `9090` or `3000`.
+
+`GCP_AUTH_FILE=` will point to the Service Account key file. This variable can 
+be omitted if Docker or your local machine is already authenticated to GCP.
+
+### Running using Docker Compose
+
+Service definition is located in the `docker-compose.yml` file.
+After preparing the env file, make sure you have the variable `DATABASE_HOST`
+as follows:
+
+```bash
+...
+DATABASE_HOST=postgres
+...
+```
+
+Then simply run:
+
+```bash
+$ docker compose up -d
+```
+
+### Running locally
+
+Make sure you have the env file updated and database connection parameters are
+set.
+
+Install dependencies:
 
 ```bash
 $ npm install
 ```
 
-## Compile and run the project
+Compile and run the project:
 
 ```bash
 # development
@@ -21,62 +91,111 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Run tests
+### Running tests
+
+
+Unit tests:
 
 ```bash
 # unit tests
 $ npm run test
+```
 
-# e2e tests
-$ npm run test:e2e
+End-to-End tests:
 
+It's best to prepare a test database for e2e tests using 
+[our init file](test/db/init.sql). We recommend using Docker for simplicity,
+make sure `.env` file and `-e` parameters match:
 
+```bash
+# This will create a test DB connnection and initialize DB from `init.sql`
 docker run -d \
 -e POSTGRES_USER=root \
 -e POSTGRES_PASSWORD=root \
 -e POSTGRES_DB=sents \
 -v $(pwd)/test/db:/docker-entrypoint-initdb.d \
 -p 5432:5432 postgres
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Then run:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+# e2e tests
+$ npm run test:e2e
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Using the API
 
-## Resources
+Upon a successful run, you should get the following output when requesting the 
+service base URL:
 
-Check out a few resources that may come in handy when working with NestJS:
+```
+API is up and running!
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+API documentation can be viewed using a browser at:
 
-## Support
+```
+[base-url]/api-docs
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+First, you need to create a user. For example, creating a user named: `test-user`.
 
-## Stay in touch
+```
+POST [base-url]/user/create
+Body:
+{"username": "test-user"}
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Analyze a text sentiment and save it to a specific user. For example, analyze the
+sentiment of the text: `I'm happy` for user: `test-user`:
+
+```
+POST [base-url]/sentiment/analyze
+Body:
+{
+	"username": "test-user",
+	"text": "I'm happy"
+}
+```
+
+If user already exists, you should get an output similar to this one:
+
+```json
+{
+	"text": "I'm happy",
+	"score": 0.8999999761581421,
+	"magnitude": 0.8999999761581421
+}
+```
+
+Where `text` is the originally sent one. `score` and `magnitude` are the 
+calculated metrics returned from Google Natural Language APIs.
+
+To view the history of user's analyzed texts:
+For example, showing a list of `test-user` sentiment text past analysis:
+
+```
+GET [base-url]/user/test-user/sentiments
+```
+
+Will give something like this, or an empty array if user has no history:
+
+```json
+[
+	{
+		"text": "I'm happy",
+		"score": "0.8999999761581421",
+		"magnitude": "0.8999999761581421"
+	},
+	{
+		"text": "I'm sad",
+		"score": "-0.8999999761581421",
+		"magnitude": "0.8999999761581421"
+	}
+]
+```
+
 
 ## License
 

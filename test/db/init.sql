@@ -47,9 +47,4 @@ CREATE UNIQUE INDEX "PK_6ffbc1049b90eef0b86bb9b92b6" ON public.sentiments USING 
 INSERT INTO "public"."users" ("id", "username") VALUES (1, 'user-1');
 -- INSERT INTO "public"."sentiments" ("id", "text", "score", "magnitude", "userId") VALUES
 -- (1, 'I''m confused', -0.800000011920929, 0.800000011920929, 1),
--- (2, 'I''m happy', 0.8999999761581421, 0.8999999761581421, 1),
--- (3, 'I''m happy', 0.8999999761581421, 0.8999999761581421, 1),
--- (4, 'I''m happy', 0.8999999761581421, 0.8999999761581421, 1),
--- (5, 'I''m happy', 0.8999999761581421, 0.8999999761581421, 1),
--- (6, 'I''m happy', 0.8999999761581421, 0.8999999761581421, 1),
--- (7, 'I''m happy', 0.8999999761581421, 0.8999999761581421, 1);
+-- (2, 'I''m happy', 0.8999999761581421, 0.8999999761581421, 1);
