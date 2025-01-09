@@ -1,6 +1,6 @@
 import { TestBed, Mocked } from '@suites/unit';
 import { Logger, NotFoundException } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from '@domain/services/user.service';
 import { UserRepository } from '@infrastructure/repositories/user.repository';
 import { User } from '@domain/entities/user';
 import { Sentiment } from '@domain/entities/sentiment';

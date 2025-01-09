@@ -3,7 +3,7 @@ import { Logger, UnprocessableEntityException } from '@nestjs/common';
 import { User } from '@domain/entities/user';
 import { Sentiment } from '@domain/entities/sentiment';
 import { UserEntity } from '@infrastructure/entities/user.entity';
-import { SentimentService } from './sentiment.service';
+import { SentimentService } from '@domain/services/sentiment.service';
 import { UserRepository } from '@infrastructure/repositories/user.repository';
 import { SentimentRepository } from '@infrastructure/repositories/sentiment.repository';
 import { LanguageApiService } from '@infrastructure/language-api/language-api.service';
