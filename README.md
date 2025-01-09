@@ -14,7 +14,7 @@ Google Cloud Natural Language API internally and is built on the
   * node 22.12.0+
   * PostgreSQL
   * Docker (optional).
-  * Make sure you machine is authenticated to Google Cloud Platform, or you
+  * Make sure your machine is authenticated to Google Cloud Platform, or you
     have the Service Account key auth JSON file for your GCP project.
     https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts/keys/create
 
@@ -108,7 +108,7 @@ It's best to prepare a test database for e2e tests using
 make sure `.env` file and `-e` parameters match:
 
 ```bash
-# This will create a test DB connnection and initialize DB from `init.sql`
+# This will create a test DB connection and initialize DB from `init.sql`
 docker run -d \
 -e POSTGRES_USER=root \
 -e POSTGRES_PASSWORD=root \
@@ -159,7 +159,7 @@ Body:
 }
 ```
 
-If user already exists, you should get an output similar to this one:
+If the user already exists, you should get an output similar to this one:
 
 ```json
 {
@@ -172,14 +172,14 @@ If user already exists, you should get an output similar to this one:
 Where `text` is the originally sent one. `score` and `magnitude` are the 
 calculated metrics returned from Google Natural Language APIs.
 
-To view the history of user's analyzed texts:
+To view the history of the user's analyzed texts:
 For example, showing a list of `test-user` sentiment text past analysis:
 
 ```
 GET [base-url]/user/test-user/sentiments
 ```
 
-Will give something like this, or an empty array if user has no history:
+Will give something like this, or an empty array if the user has no history:
 
 ```json
 [
